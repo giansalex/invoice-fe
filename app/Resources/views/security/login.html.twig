@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#4286f4">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Titan4Control - Herramienta para Laboratorios">
+    <meta name="author" content="">
+    <title>Login | Titan4Control</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    {% if error %}
+    <div class="alert alert-danger header-alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-offset-md-3 col-md-6">
+                <div class="index-register">
+                    <form method="POST" id="sign_upFormulary" action="{{ path('security_login') }}">
+                        <label for="username">Usuario</label>
+                        <input type="text" name="_username" class="form-control" id="username" placeholder="Escriba su nombre de usuario">
+                        <label for="password">Contrase&ntilde;a</label>
+                        <input type="password" name="_password" class="form-control" id="password" placeholder="Escriba su contrase&ntilde;a">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                        <button type="submit" id="sign_upButton" class="btn btn-primary">Iniciar sesión</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
