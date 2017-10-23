@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Docnumbers list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Code</th>
+                <th>Serie</th>
+                <th>Correlativo</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for docNumber in docNumbers %}
+            <tr>
+                <td><a href="{{ path('sries-documento_show', { 'id': docNumber.id }) }}">{{ docNumber.id }}</a></td>
+                <td>{{ docNumber.code }}</td>
+                <td>{{ docNumber.serie }}</td>
+                <td>{{ docNumber.correlativo }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('sries-documento_show', { 'id': docNumber.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('sries-documento_edit', { 'id': docNumber.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('sries-documento_new') }}">Create a new docNumber</a>
+        </li>
+    </ul>
+{% endblock %}

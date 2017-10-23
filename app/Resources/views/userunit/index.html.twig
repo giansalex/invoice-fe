@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Userunits list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Code</th>
+                <th>Description</th>
+                <th>Userid</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for userUnit in userUnits %}
+            <tr>
+                <td><a href="{{ path('unidades_show', { 'id': userUnit.id }) }}">{{ userUnit.id }}</a></td>
+                <td>{{ userUnit.code }}</td>
+                <td>{{ userUnit.description }}</td>
+                <td>{{ userUnit.userId }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('unidades_show', { 'id': userUnit.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('unidades_edit', { 'id': userUnit.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('unidades_new') }}">Create a new userUnit</a>
+        </li>
+    </ul>
+{% endblock %}

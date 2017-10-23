@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Docnumber</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ docNumber.id }}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>{{ docNumber.code }}</td>
+            </tr>
+            <tr>
+                <th>Serie</th>
+                <td>{{ docNumber.serie }}</td>
+            </tr>
+            <tr>
+                <th>Correlativo</th>
+                <td>{{ docNumber.correlativo }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('sries-documento_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('sries-documento_edit', { 'id': docNumber.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
