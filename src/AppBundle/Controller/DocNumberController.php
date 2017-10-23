@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 /**
  * Docnumber controller.
  *
- * @Route("/series-documento")
+ * @Route("series-documento")
  */
 class DocNumberController extends Controller
 {

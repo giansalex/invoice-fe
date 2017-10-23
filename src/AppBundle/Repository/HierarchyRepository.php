@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Hierarchy;
+
 /**
  * HierarchyRepository
  *
@@ -10,4 +12,12 @@ namespace AppBundle\Repository;
  */
 class HierarchyRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param $id
+     * @return Hierarchy[]
+     */
+    public function getGroup($id)
+    {
+        return $this->findBy(['id' => $id]);
+    }
 }

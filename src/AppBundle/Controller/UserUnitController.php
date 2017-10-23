@@ -10,10 +10,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 /**
  * Userunit controller.
  *
- * @Route("/unidades")
+ * @Route("unidades")
  */
 class UserUnitController extends Controller
 {
+    use BaseControllerTrait;
+
     /**
      * Lists all userUnit entities.
      *
@@ -22,9 +24,9 @@ class UserUnitController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDbManager();
 
-        $userUnits = $em->getRepository('AppBundle:UserUnit')->findAll();
+        $userUnits = $em->getRepository('AppBundle:UserUnit')->findBy(['userId' => $this->getUserId()]);
 
         return $this->render('userunit/index.html.twig', array(
             'userUnits' => $userUnits,
@@ -40,11 +42,13 @@ class UserUnitController extends Controller
     public function newAction(Request $request)
     {
         $userUnit = new Userunit();
-        $form = $this->createForm('AppBundle\Form\UserUnitType', $userUnit);
+
+        $form = $this->createForm('AppBundle\Form\UserUnitType', $userUnit, ['choices' => $this->getUnitsGlobal()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $userUnit->setUser($this->getUser());
+            $em = $this->getDbManager();
             $em->persist($userUnit);
             $em->flush();
 
@@ -82,11 +86,11 @@ class UserUnitController extends Controller
     public function editAction(Request $request, UserUnit $userUnit)
     {
         $deleteForm = $this->createDeleteForm($userUnit);
-        $editForm = $this->createForm('AppBundle\Form\UserUnitType', $userUnit);
+        $editForm = $this->createForm('AppBundle\Form\UserUnitType', $userUnit, ['choices' => $this->getUnitsGlobal()]);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->getDbManager()->flush();
 
             return $this->redirectToRoute('unidades_edit', array('id' => $userUnit->getId()));
         }
@@ -110,9 +114,11 @@ class UserUnitController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($userUnit);
-            $em->flush();
+            if ($userUnit->getUserId() == $this->getUserId()) {
+                $em = $this->getDbManager();
+                $em->remove($userUnit);
+                $em->flush();
+            }
         }
 
         return $this->redirectToRoute('unidades_index');
@@ -132,5 +138,11 @@ class UserUnitController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    private function getUnitsGlobal()
+    {
+        $em = $this->getDbManager();
+        return $em->getRepository('AppBundle:Hierarchy')->findBy(['id' => 3]);
     }
 }

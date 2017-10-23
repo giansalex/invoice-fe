@@ -36,6 +36,20 @@ class Hierarchy
     private $description;
 
     /**
+     * Set id
+     *
+     * @param int $id
+     *
+     * @return Hierarchy
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * Get id
      *
      * @return int

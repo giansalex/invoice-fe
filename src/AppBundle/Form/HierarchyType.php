@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductType extends AbstractType
+class HierarchyType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -14,12 +14,9 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('id')
             ->add('code')
-            ->add('description')
-            ->add('price')
-            ->add('unitCode')
-            ->add('taxCode')
-            ->add('userId');
+            ->add('description');
     }
     
     /**
@@ -28,7 +25,7 @@ class ProductType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Product'
+            'data_class' => 'AppBundle\Entity\Hierarchy'
         ));
     }
 
@@ -37,7 +34,7 @@ class ProductType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_product';
+        return 'appbundle_hierarchy';
     }
 
 

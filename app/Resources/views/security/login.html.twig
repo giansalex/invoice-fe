@@ -10,30 +10,161 @@
     <title>Login | Titan4Control</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        h2   {color:white}
+        p    {color:white}
+
+        body, html {
+            height: 100%;
+            background-repeat: no-repeat;
+            /*background-image: linear-gradient(135deg, rgba(31,123,229,1) 0%, rgba(58,139,232,1) 47%, rgba(70,153,234,1) 92%, rgba(72,156,234,1) 100%);*/
+            background: url(../img/login-bg.JPG) no-repeat center center fixed;
+            background-size: 100% 100%;
+        }
+
+        .card-container.card {
+            width: 350px;
+            padding: 40px 40px;
+        }
+
+        .btn {
+            font-weight: 700;
+            height: 36px;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+            cursor: default;
+        }
+
+        /*
+         * Card component
+         */
+        .card {
+            background-color: #F7F7F7;
+            /* just in case there no content*/
+            padding: 20px 25px 30px;
+            margin: 0 auto 25px;
+            margin-top: 50px;
+            /* shadows and rounded borders */
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-img-card {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 10px;
+            display: block;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            border-radius: 50%;
+        }
+
+        /*
+         * Form styles
+         */
+        .profile-name-card {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0 0;
+            min-height: 1em;
+        }
+
+        .reauth-email {
+            display: block;
+            color: #404040;
+            line-height: 2;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .form-signin #inputEmail,
+        .form-signin #inputPassword {
+            direction: ltr;
+            height: 44px;
+            font-size: 16px;
+        }
+
+        .form-signin input[type=email],
+        .form-signin input[type=password],
+        .form-signin input[type=text],
+        .form-signin button {
+            width: 100%;
+            display: block;
+            margin-bottom: 10px;
+            z-index: 1;
+            position: relative;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .form-signin .form-control:focus {
+            border-color: rgb(104, 145, 162);
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgb(104, 145, 162);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgb(104, 145, 162);
+        }
+
+        .btn.btn-signin {
+            /*background-color: #4d90fe; */
+            /*background-color: rgb(104, 145, 162);
+            / background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
+            padding: 0px;
+            font-weight: 700;
+            font-size: 14px;
+            height: 36px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            border: none;
+            -o-transition: all 0.218s;
+            -moz-transition: all 0.218s;
+            -webkit-transition: all 0.218s;
+            transition: all 0.218s;
+        }
+
+
+        .forgot-password {
+            color: rgb(104, 145, 162);
+        }
+
+        .forgot-password:hover,
+        .forgot-password:active,
+        .forgot-password:focus{
+            color: rgb(12, 97, 33);
+        }
+    </style>
 </head>
 <body>
-    {% if error %}
-    <div class="alert alert-danger header-alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+
     <div class="container">
-        <div class="row">
-            <div class="col-offset-md-3 col-md-6">
-                <div class="index-register">
-                    <form method="POST" id="sign_upFormulary" action="{{ path('security_login') }}">
-                        <label for="username">Usuario</label>
-                        <input type="text" name="_username" class="form-control" id="username" placeholder="Escriba su nombre de usuario">
-                        <label for="password">Contrase&ntilde;a</label>
-                        <input type="password" name="_password" class="form-control" id="password" placeholder="Escriba su contrase&ntilde;a">
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-                        <button type="submit" id="sign_upButton" class="btn btn-primary">Iniciar sesión</button>
-                    </form>
-                </div>
-            </div>
+        <div class="card card-container">
+            <img id="profile-img" class="profile-img-card" src="http://obedalvarado.pw/demo/simple_invoice/img/avatar_2x.png" />
+            <p id="profile-name" class="profile-name-card"></p>
+            <form method="post" accept-charset="utf-8" action="{{ path('security_login') }}" name="loginform" role="form" class="form-signin">
+                {% if error %}
+                    <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <span id="reauth-email" class="reauth-email"></span>
+                <input class="form-control" placeholder="Usuario" name="_username" type="text" value="" autofocus="" required>
+                <input class="form-control" placeholder="Contraseña" name="_password" type="password" value="" required>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                <button type="submit" class="btn btn-lg btn-success btn-block btn-signin" name="login" id="submit">Iniciar Sesión</button>
+            </form>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -5,11 +5,11 @@
                 <span class="sr-only">Toggle navigation</span>
                 Menú <i class="fa fa-bars"></i>
             </button>
+            <a class="navbar-brand" href="#">FACTESOL</a>
         </div>
 
         <div class="collapse navbar-collapse" id="ip-navbar-collapse">
             <ul class="nav navbar-nav">
-                <li>DASHBOARD</li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-caret-down"></i> &nbsp;
@@ -17,8 +17,20 @@
                         <i class="visible-md-inline fa fa-users"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li>Agregar cliente</li>
-                        <li>Ver clientes</li>
+                        <li><a href="">Agregar cliente</a></li>
+                        <li><a href="">Ver clientes</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-caret-down"></i> &nbsp;
+                        <span class="hidden-md">Productos</span>
+                        <i class="visible-md-inline fa fa-database"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ path('productos_new') }}">Crear Producto</a></li>
+                        <li><a href="{{ path('productos_index') }}">Ver Productos</a></li>
+                        <li><a href="{{ path('unidades_index') }}">Ver Unidades</a></li>
                     </ul>
                 </li>
             </ul>
@@ -26,7 +38,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <a href="http://docs.invoiceplane.com/" target="_blank"
-                       class="tip icon" title="<?php _trans('documentation'); ?>"
+                       class="tip icon" title="Documentacion"
                        data-placement="bottom">
                         <i class="fa fa-question-circle"></i>
                         <span class="visible-xs">&nbsp;Documentación</span>
@@ -35,7 +47,7 @@
 
                 <li class="dropdown">
                     <a href="#" class="tip icon dropdown-toggle" data-toggle="dropdown"
-                       title="<?php _trans('settings'); ?>"
+                       title="Configuraciones"
                        data-placement="bottom">
                         <i class="fa fa-cogs"></i>
                         <span class="visible-xs">&nbsp;Configuración</span>
@@ -48,7 +60,7 @@
                 <li>
                     <a href="{{ path('security_logout') }}"
                        class="tip icon logout" data-placement="bottom"
-                       title="<?php _trans('logout'); ?>">
+                       title="Salir">
                         <i class="fa fa-power-off"></i>
                         <span class="visible-xs">&nbsp;Salir</span>
                     </a>

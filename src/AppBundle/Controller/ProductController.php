@@ -14,6 +14,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
  */
 class ProductController extends Controller
 {
+    use BaseControllerTrait;
+
     /**
      * Lists all product entities.
      *
@@ -24,7 +26,7 @@ class ProductController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $products = $em->getRepository('AppBundle:Product')->findAll();
+        $products = $em->getRepository('AppBundle:Product')->findBy(['user' => $this->getUser()]);
 
         return $this->render('product/index.html.twig', array(
             'products' => $products,

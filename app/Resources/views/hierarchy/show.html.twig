@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Hierarchies de {{ hierarchy.description }}</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Code</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for hierarchy in hierarchies %}
+        <tr>
+            <td><a href="{{ path('hierarchy_show', { 'id': hierarchy.id }) }}">{{ hierarchy.id }}</a></td>
+            <td>{{ hierarchy.code }}</td>
+            <td>{{ hierarchy.description }}</td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('hierarchy_show', { 'id': hierarchy.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('hierarchy_edit', { 'id': hierarchy.id }) }}">edit</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
