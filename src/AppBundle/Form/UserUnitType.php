@@ -17,7 +17,7 @@ class UserUnitType extends AbstractType
     {
         $builder
             ->add('code', ChoiceType::class, [
-                'choices' => $this->buildUnits($options['choices']),
+                'choices' => $this->buildUnits($options['units']),
             ])
             ->add('description');
     }
@@ -29,7 +29,7 @@ class UserUnitType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\UserUnit',
-            'choices' => null
+            'units' => null
         ));
     }
 

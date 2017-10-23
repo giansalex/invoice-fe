@@ -5,7 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Product controller.
@@ -42,15 +44,23 @@ class ProductController extends Controller
     public function newAction(Request $request)
     {
         $product = new Product();
-        $form = $this->createForm('AppBundle\Form\ProductType', $product);
+        $form = $this->createForm('AppBundle\Form\ProductType', $product, $this->getFormOptions());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $product->setUser($this->getUser());
+            $product->setCode(strtoupper($product->getCode()));
             $em = $this->getDoctrine()->getManager();
-            $em->persist($product);
-            $em->flush();
+            $exist = $em->getRepository('AppBundle:Product')->existProduct($product);
+            if ($exist) {
+                $form->get('code')
+                    ->addError(new FormError('Código ya esta registrado'));
+            } else {
+                $em->persist($product);
+                $em->flush();
 
-            return $this->redirectToRoute('productos_show', array('id' => $product->getId()));
+                return $this->redirectToRoute('productos_show', array('id' => $product->getId()));
+            }
         }
 
         return $this->render('product/new.html.twig', array(
@@ -84,13 +94,20 @@ class ProductController extends Controller
     public function editAction(Request $request, Product $product)
     {
         $deleteForm = $this->createDeleteForm($product);
-        $editForm = $this->createForm('AppBundle\Form\ProductType', $product);
+        $editForm = $this->createForm('AppBundle\Form\ProductType', $product, $this->getFormOptions());
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('productos_edit', array('id' => $product->getId()));
+            $product->setCode(strtoupper($product->getCode()));
+            $em = $this->getDoctrine()->getManager();
+            $exist = $em->getRepository('AppBundle:Product')->existProduct($product);
+            if ($exist) {
+                $editForm->get('code')
+                    ->addError(new FormError('Código ya esta registrado'));
+            } else {
+                $em->flush();
+                return $this->redirectToRoute('productos_edit', array('id' => $product->getId()));
+            }
         }
 
         return $this->render('product/edit.html.twig', array(
@@ -134,5 +151,15 @@ class ProductController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    private function getFormOptions()
+    {
+        $args = ['user' => $this->getUser()];
+        $doctrine = $this->getDoctrine();
+        $units = $doctrine->getRepository('AppBundle:UserUnit')->findBy($args);
+        $taxs = $doctrine->getRepository('AppBundle:Hierarchy')->getGroup(7);
+
+        return ['units' => $units, 'taxs' => $taxs];
     }
 }

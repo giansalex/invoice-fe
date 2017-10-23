@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Product;
+
 /**
  * ProductRepository
  *
@@ -10,4 +12,18 @@ namespace AppBundle\Repository;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param Product $product
+     * @return bool
+     */
+    public function existProduct(Product $product)
+    {
+        $prod = $this->findOneBy(['code' => $product->getCode(), 'user' => $product->getUser()]);
+
+        if ($prod && $prod->getId() != $product->getId()) {
+            return true;
+        }
+
+        return false;
+    }
 }
