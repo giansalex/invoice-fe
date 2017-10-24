@@ -34,6 +34,18 @@ class HierarchyController extends Controller
     }
 
     /**
+     * @Route("/group/{id}", name="hierarchy_group")
+     * @Method({"GET"})
+     */
+    public function getGroupAction($id)
+    {
+        $em = $this->getDbManager();
+        $items = $em->getRepository('AppBundle:Hierarchy')->getGroup($id);
+
+        return $this->json($items);
+    }
+
+    /**
      * Creates a new hierarchy entity.
      *
      * @Route("/new", name="hierarchy_new")

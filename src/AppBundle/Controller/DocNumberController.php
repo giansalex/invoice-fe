@@ -5,7 +5,10 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\DocNumber;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Docnumber controller.
@@ -31,6 +34,31 @@ class DocNumberController extends Controller
         return $this->render('docnumber/index.html.twig', array(
             'docNumbers' => $docNumbers,
         ));
+    }
+
+    /**
+     * @Route("/by-doc", name="serie_by_doc")
+     * @Method({"POST"})
+     */
+    public function serieForDocAction(Request $request)
+    {
+       $obj = json_decode($request->getContent());
+       if (!isset($obj->doc)) {
+           return new Response('missing doc', 400);
+       }
+
+       $em = $this->getDbManager();
+       $serie = $em->getRepository('AppBundle:DocNumber')
+                ->findOneBy(['user' => $this->getUser(), 'code' => $obj->doc]);
+
+       if (!$serie) {
+           $this->createNotFoundException();
+       }
+
+       return new JsonResponse([
+           'serie' => $serie->getSerie(),
+           'correlativo' => $serie->getCorrelativo(),
+       ]);
     }
 
     /**

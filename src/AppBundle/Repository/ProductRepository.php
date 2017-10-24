@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Product;
+use AppBundle\Entity\User;
 
 /**
  * ProductRepository
@@ -12,6 +13,25 @@ use AppBundle\Entity\Product;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param User $user
+     * @param string $text
+     * @return array
+     */
+    public function filterByText(User $user, $text)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.id,u.code,u.description AS name,u.price,u.taxCode AS tax')
+            ->where('u.user = ?1 AND u.code LIKE ?2 OR u.description LIKE ?2')
+            ->setMaxResults(10)
+            ->setParameters([
+                1 => $user,
+                2 => "%$text%",
+            ])
+            ->getQuery()
+            ->getResult();
+    }
+
     /**
      * @param Product $product
      * @return bool

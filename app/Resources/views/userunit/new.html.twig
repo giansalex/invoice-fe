@@ -1,11 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Userunit creation</h1>
+<div class="container">
+    <h1><i class="fa fa-plus"></i> Nueva Unidad</h1>
 
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+    {{ form_widget(form) }}
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button class="btn btn-primary">Crear</button>
+        </div>
+    </div>
     {{ form_end(form) }}
 
     <ul>
@@ -13,4 +18,5 @@
             <a href="{{ path('unidades_index') }}">Back to the list</a>
         </li>
     </ul>
+</div>
 {% endblock %}

@@ -5,7 +5,11 @@
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button class="btn btn-primary">Crear</button>
+        </div>
+    </div>
     {{ form_end(form) }}
 
     <ul>

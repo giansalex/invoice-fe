@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Product controller.
@@ -33,6 +34,24 @@ class ProductController extends Controller
         return $this->render('product/index.html.twig', array(
             'products' => $products,
         ));
+    }
+
+    /**
+     * @Route("/filter", name="productos_filter")
+     * @Method({"GET"})
+     */
+    public function filterAction(Request $request)
+    {
+        $text = $request->query->get('s');
+        if (empty($text)) {
+            return new Response('missing filter', 400);
+        }
+
+        $em = $this->getDbManager();
+        $clients = $em->getRepository('AppBundle:Product')
+            ->filterByText($this->getUser(), $text);
+
+        return $this->json($clients);
     }
 
     /**

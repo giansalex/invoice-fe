@@ -6,6 +6,7 @@ use AppBundle\Entity\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Client controller.
@@ -31,6 +32,24 @@ class ClientController extends Controller
         return $this->render('client/index.html.twig', array(
             'clients' => $clients,
         ));
+    }
+
+    /**
+     * @Route("/filter", name="client_filter")
+     * @Method({"GET"})
+     */
+    public function getClientsAction(Request $request)
+    {
+        $text = $request->query->get('s');
+        if (empty($text)) {
+            return new Response('missing filter', 400);
+        }
+
+        $em = $this->getDbManager();
+        $clients = $em->getRepository('AppBundle:Client')
+            ->filterByText($this->getUser(), $text);
+
+        return $this->json($clients);
     }
 
     /**

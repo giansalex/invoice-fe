@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\User;
+
 /**
  * ClientRepository
  *
@@ -10,4 +12,22 @@ namespace AppBundle\Repository;
  */
 class ClientRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param User $user
+     * @param string $text
+     * @return array
+     */
+    public function filterByText(User $user, $text)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.id, u.document, u.nameRzs AS name')
+            ->where('u.user = ?1 AND u.document LIKE ?2 OR u.nameRzs LIKE ?2')
+            ->setMaxResults(10)
+            ->setParameters([
+                1 => $user,
+                2 => "%$text%",
+            ])
+            ->getQuery()
+            ->getResult();
+    }
 }
