@@ -14,6 +14,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
  */
 class DocNumberController extends Controller
 {
+    use BaseControllerTrait;
+
     /**
      * Lists all docNumber entities.
      *
@@ -40,10 +42,11 @@ class DocNumberController extends Controller
     public function newAction(Request $request)
     {
         $docNumber = new Docnumber();
-        $form = $this->createForm('AppBundle\Form\DocNumberType', $docNumber);
+        $form = $this->createForm('AppBundle\Form\DocNumberType', $docNumber, $this->getChoiceOptions());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $docNumber->setUser($this->getUser());
             $em = $this->getDoctrine()->getManager();
             $em->persist($docNumber);
             $em->flush();
@@ -82,13 +85,13 @@ class DocNumberController extends Controller
     public function editAction(Request $request, DocNumber $docNumber)
     {
         $deleteForm = $this->createDeleteForm($docNumber);
-        $editForm = $this->createForm('AppBundle\Form\DocNumberType', $docNumber);
+        $editForm = $this->createForm('AppBundle\Form\DocNumberType', $docNumber, $this->getChoiceOptions());
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('series-documento_edit', array('id' => $docNumber->getId()));
+            return $this->redirectToRoute('series-documento_index');
         }
 
         return $this->render('docnumber/edit.html.twig', array(
@@ -132,5 +135,13 @@ class DocNumberController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    private function getChoiceOptions()
+    {
+        $em = $this->getDbManager();
+        $values = $em->getRepository('AppBundle:Hierarchy')->getGroup(1);
+
+        return ['docs' => $values];
     }
 }

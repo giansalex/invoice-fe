@@ -36,8 +36,8 @@ class ProductType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Product',
-            'units' => null,
-            'taxs' => null
+            'units' => [],
+            'taxs' => [],
         ));
     }
 

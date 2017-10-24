@@ -16,17 +16,17 @@
         <tbody>
         {% for docNumber in docNumbers %}
             <tr>
-                <td><a href="{{ path('sries-documento_show', { 'id': docNumber.id }) }}">{{ docNumber.id }}</a></td>
+                <td><a href="{{ path('series-documento_show', { 'id': docNumber.id }) }}">{{ docNumber.id }}</a></td>
                 <td>{{ docNumber.code }}</td>
                 <td>{{ docNumber.serie }}</td>
                 <td>{{ docNumber.correlativo }}</td>
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('sries-documento_show', { 'id': docNumber.id }) }}">show</a>
+                            <a href="{{ path('series-documento_show', { 'id': docNumber.id }) }}">show</a>
                         </li>
                         <li>
-                            <a href="{{ path('sries-documento_edit', { 'id': docNumber.id }) }}">edit</a>
+                            <a href="{{ path('series-documento_edit', { 'id': docNumber.id }) }}">edit</a>
                         </li>
                     </ul>
                 </td>
@@ -37,7 +37,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('sries-documento_new') }}">Create a new docNumber</a>
+            <a href="{{ path('series-documento_new') }}">Create a new docNumber</a>
         </li>
     </ul>
 {% endblock %}

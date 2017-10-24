@@ -92,7 +92,7 @@ class DocNumber
      */
     public function setSerie($serie)
     {
-        $this->serie = $serie;
+        $this->serie = strtoupper($serie);
 
         return $this;
     }
