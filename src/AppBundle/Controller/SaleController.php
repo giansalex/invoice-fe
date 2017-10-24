@@ -27,8 +27,19 @@ class SaleController extends Controller
 
         $sales = $em->getRepository('AppBundle:Sale')->findBy(['userId' => $this->getUserId()]);
 
-        return $this->render('sale/index.htm.twig', array(
+        return $this->render('sale/index.html.twig', array(
             'sales' => $sales,
         ));
+    }
+
+    /**
+     * List of Sales.
+     *
+     * @Route("/", name="sale_new")
+     * @Method({"GET"})
+     */
+    public function newAction()
+    {
+        return $this->render('sale/new.html.twig');
     }
 }
