@@ -6,21 +6,20 @@
     <table>
         <thead>
         <tr>
+            <th>Fecha</th>
             <th>Tipo</th>
             <th>Documento</th>
-            <th>Price</th>
-            <th>Unitcode</th>
-            <th>Taxcode</th>
-            <th>Userid</th>
+            <th>Moneda</th>
+            <th>Total</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         {% for sale in sales %}
             <tr>
+                <td>{{ sale.emision|date('d/m/Y')}}</td>
                 <td>{{ sale.docType}}</td>
                 <td>{{ sale.serie }}-{{ sale.correlativo }}</td>
-                <td>{{ sale.emision|date('d/m/Y')}}</td>
                 <td>{{ sale.moneda }}</td>
                 <td>{{ sale.total }}</td>
                 <td>
