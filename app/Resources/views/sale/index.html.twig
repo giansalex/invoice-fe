@@ -7,7 +7,7 @@
         <thead>
         <tr>
             <th>Tipo</th>
-            <th>Description</th>
+            <th>Documento</th>
             <th>Price</th>
             <th>Unitcode</th>
             <th>Taxcode</th>
@@ -18,19 +18,15 @@
         <tbody>
         {% for sale in sales %}
             <tr>
-                <td>{{ sale.cde}}</td>
-                <td>{{ sale.description }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.unitCode }}</td>
-                <td>{{ product.taxCode }}</td>
-                <td>{{ product.userId }}</td>
+                <td>{{ sale.docType}}</td>
+                <td>{{ sale.serie }}-{{ sale.correlativo }}</td>
+                <td>{{ sale.emision|date('d/m/Y')}}</td>
+                <td>{{ sale.moneda }}</td>
+                <td>{{ sale.total }}</td>
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('productos_show', { 'id': product.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('productos_edit', { 'id': product.id }) }}">edit</a>
+                            <a href="{{ path('productos_edit', { 'id': sale.id }) }}">Edit</a>
                         </li>
                     </ul>
                 </td>
@@ -41,7 +37,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('productos_new') }}">Create a new product</a>
+            <a href="{{ path('sale_new') }}">Create a new sale</a>
         </li>
     </ul>
 {% endblock %}

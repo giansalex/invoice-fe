@@ -35,10 +35,32 @@ class SaleController extends Controller
     /**
      * List of Sales.
      *
-     * @Route("/", name="sale_new")
+     * @Route("/new", name="sale_new")
      * @Method({"GET"})
      */
     public function newAction()
+    {
+        return $this->render('sale/new.html.twig');
+    }
+
+    /**
+     * List of Sales.
+     *
+     * @Route("/new", name="sale_new_save")
+     * @Method({"POST"})
+     */
+    public function newSaveAction()
+    {
+        return $this->render('sale/new.html.twig');
+    }
+
+    /**
+     * List of Sales.
+     *
+     * @Route("/new", name="sale_edit")
+     * @Method({"GET"})
+     */
+    public function editAction()
     {
         return $this->render('sale/new.html.twig');
     }
