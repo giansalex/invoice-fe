@@ -17,8 +17,8 @@
                         <i class="visible-md-inline fa fa-users"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ path('client_new') }}">Agregar cliente</a></li>
-                        <li><a href="{{ path('client_index') }}">Ver clientes</a></li>
+                        <li><a href="{{ path('client_new') }}">Agregar Cliente</a></li>
+                        <li><a href="{{ path('client_index') }}">Ver Clientes</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -31,6 +31,17 @@
                         <li><a href="{{ path('productos_new') }}">Crear Producto</a></li>
                         <li><a href="{{ path('productos_index') }}">Ver Productos</a></li>
                         <li><a href="{{ path('unidades_index') }}">Ver Unidades</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-caret-down"></i> &nbsp;
+                        <span class="hidden-md">Comprobantes</span>
+                        <i class="visible-md-inline fa fa-users"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ path('client_new') }}">Crear Comprobante</a></li>
+                        <li><a href="{{ path('client_index') }}">Ver Comprobantes</a></li>
                     </ul>
                 </li>
             </ul>

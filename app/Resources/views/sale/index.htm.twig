@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Sales list</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Tipo</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Unitcode</th>
+            <th>Taxcode</th>
+            <th>Userid</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sale in sales %}
+            <tr>
+                <td>{{ sale.code }}</td>
+                <td>{{ sale.description }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.unitCode }}</td>
+                <td>{{ product.taxCode }}</td>
+                <td>{{ product.userId }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('productos_show', { 'id': product.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('productos_edit', { 'id': product.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('productos_new') }}">Create a new product</a>
+        </li>
+    </ul>
+{% endblock %}

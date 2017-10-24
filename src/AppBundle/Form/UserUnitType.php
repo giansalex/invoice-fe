@@ -3,8 +3,9 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Hierarchy;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,8 +17,17 @@ class UserUnitType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('code', ChoiceType::class, [
-                'choices' => $this->buildUnits($options['units']),
+            ->add('code', EntityType::class, [
+                'class' => Hierarchy::class,
+                'choice_label' => function ($item) {
+                    /**@var $item Hierarchy */
+                    return $item->getCode() . ' - ' . $item->getDescription();
+                },
+                'choice_value' => 'code',
+                'query_builder' => function (EntityRepository $er) {
+                    /**@var $er \AppBundle\Repository\HierarchyRepository */
+                    return $er->getGroupQuery(3);
+                },
             ])
             ->add('description');
     }
@@ -29,7 +39,6 @@ class UserUnitType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\UserUnit',
-            'units' => []
         ));
     }
 
@@ -39,16 +48,5 @@ class UserUnitType extends AbstractType
     public function getBlockPrefix()
     {
         return 'appbundle_userunit';
-    }
-
-    protected function buildUnits($units) {
-        $choices = [];
-
-        foreach ($units as $item) {
-            /**@var $item Hierarchy */
-            $choices[$item->getCode() . ' - ' . $item->getDescription()] = $item->getCode();
-        }
-
-        return $choices;
     }
 }

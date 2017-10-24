@@ -43,7 +43,7 @@ class UserUnitController extends Controller
     {
         $userUnit = new Userunit();
 
-        $form = $this->createForm('AppBundle\Form\UserUnitType', $userUnit, ['units' => $this->getUnitsGlobal()]);
+        $form = $this->createForm('AppBundle\Form\UserUnitType', $userUnit);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -86,7 +86,7 @@ class UserUnitController extends Controller
     public function editAction(Request $request, UserUnit $userUnit)
     {
         $deleteForm = $this->createDeleteForm($userUnit);
-        $editForm = $this->createForm('AppBundle\Form\UserUnitType', $userUnit, ['units' => $this->getUnitsGlobal()]);
+        $editForm = $this->createForm('AppBundle\Form\UserUnitType', $userUnit);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -138,11 +138,5 @@ class UserUnitController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
-    }
-
-    private function getUnitsGlobal()
-    {
-        $em = $this->getDbManager();
-        return $em->getRepository('AppBundle:Hierarchy')->getGroup(3);
     }
 }

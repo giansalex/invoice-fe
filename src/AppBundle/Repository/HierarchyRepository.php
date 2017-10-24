@@ -13,11 +13,22 @@ use AppBundle\Entity\Hierarchy;
 class HierarchyRepository extends \Doctrine\ORM\EntityRepository
 {
     /**
-     * @param $id
+     * @param int $id
      * @return Hierarchy[]
      */
     public function getGroup($id)
     {
         return $this->findBy(['id' => $id]);
+    }
+
+    /**
+     * @param int $id
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getGroupQuery($id)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.id = ?1')
+            ->setParameter(1, $id);
     }
 }

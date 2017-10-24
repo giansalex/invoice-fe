@@ -89,6 +89,9 @@ class ClientController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            if ($client->getUserId() != $this->getUserId()) { //TODO: Validar que el usuario fuel el creador.
+                $this->createAccessDeniedException();
+            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('client_index');
