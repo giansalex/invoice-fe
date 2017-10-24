@@ -44,12 +44,11 @@ class ProductController extends Controller
     public function newAction(Request $request)
     {
         $product = new Product();
-        $form = $this->createForm('AppBundle\Form\ProductType', $product, $this->getFormOptions());
+        $form = $this->createForm('AppBundle\Form\ProductType', $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $product->setUser($this->getUser());
-            $product->setCode(strtoupper($product->getCode()));
             $em = $this->getDoctrine()->getManager();
             $exist = $em->getRepository('AppBundle:Product')->existProduct($product);
             if ($exist) {
@@ -94,11 +93,10 @@ class ProductController extends Controller
     public function editAction(Request $request, Product $product)
     {
         $deleteForm = $this->createDeleteForm($product);
-        $editForm = $this->createForm('AppBundle\Form\ProductType', $product, $this->getFormOptions());
+        $editForm = $this->createForm('AppBundle\Form\ProductType', $product);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $product->setCode(strtoupper($product->getCode()));
             $em = $this->getDoctrine()->getManager();
             $exist = $em->getRepository('AppBundle:Product')->existProduct($product);
             if ($exist) {
@@ -151,15 +149,5 @@ class ProductController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
-    }
-
-    private function getFormOptions()
-    {
-        $args = ['user' => $this->getUser()];
-        $doctrine = $this->getDoctrine();
-        $units = $doctrine->getRepository('AppBundle:UserUnit')->findBy($args);
-        $taxs = $doctrine->getRepository('AppBundle:Hierarchy')->getGroup(7);
-
-        return ['units' => $units, 'taxs' => $taxs];
     }
 }

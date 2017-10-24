@@ -4,29 +4,69 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Hierarchy;
 use AppBundle\Entity\UserUnit;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ProductType extends AbstractType
 {
+    private $tokenStorage;
+
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $user = $this->tokenStorage->getToken()->getUser();
+
         $builder
             ->add('code')
             ->add('description')
             ->add('price', NumberType::class)
-            ->add('unitCode', ChoiceType::class, [
-                'choices' => $this->buildUnits($options['units'])
+            ->add('unitCode', EntityType::class, [
+                'class' => UserUnit::class,
+                'choice_label' => function ($item) {
+                    /**@var $item UserUnit */
+                    return $item->getCode() . ' - ' . $item->getDescription();
+                },
+                'choice_value' => 'code',
+                'query_builder' => function (\AppBundle\Repository\UserUnitRepository $er) use ($user) {
+                    return $er->createQueryBuilder('u')
+                        ->where('u.user = ?1')
+                        ->setParameter(1, $user);
+                },
+                'required' => true
             ])
-            ->add('taxCode', ChoiceType::class, [
-                'choices' => $this->buildTaxs($options['taxs'])
+            ->add('taxCode', EntityType::class, [
+                'class' => Hierarchy::class,
+                'choice_label' => function ($item) {
+                    /**@var $item Hierarchy */
+                    return $item->getCode() . ' - ' . $item->getDescription();
+                },
+                'choice_value' => 'code',
+                'query_builder' => function (\AppBundle\Repository\HierarchyRepository $er) {
+                    return $er->getGroupQuery(7);
+                },
             ]);
+
+        $builder->addEventListener(
+            FormEvents::SUBMIT,
+            function (FormEvent $event) {
+                $data = $event->getData();
+                $data->setUnitCode($data->getUnitCode()->getCode());
+                $data->setTaxCode($data->getTaxCode()->getCode());
+            }
+        );
     }
     
     /**
@@ -36,8 +76,6 @@ class ProductType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Product',
-            'units' => [],
-            'taxs' => [],
         ));
     }
 
@@ -47,27 +85,5 @@ class ProductType extends AbstractType
     public function getBlockPrefix()
     {
         return 'appbundle_product';
-    }
-
-    protected function buildUnits($units) {
-        $choices = [];
-
-        foreach ($units as $item) {
-            /**@var $item UserUnit */
-            $choices[$item->getCode() . ' - ' . $item->getDescription()] = $item->getCode();
-        }
-
-        return $choices;
-    }
-
-    protected function buildTaxs($taxs) {
-        $choices = [];
-
-        foreach ($taxs as $item) {
-            /**@var $item Hierarchy */
-            $choices[$item->getCode() . ' - ' . $item->getDescription()] = $item->getCode();
-        }
-
-        return $choices;
     }
 }
