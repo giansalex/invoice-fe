@@ -6,6 +6,7 @@ use AppBundle\Entity\Hierarchy;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,16 +19,17 @@ class ClientType extends AbstractType
     {
         $builder
             ->add('typeDoc', ChoiceType::class, [
-                'choices' => $this->buildDocs($options['docs'])
+                'choices' => $this->buildDocs($options['docs']),
+                'label' => 'Tipo Documento',
             ])
-            ->add('document')
-            ->add('nameRzs')
-            ->add('comercialName')
+            ->add('document', TextType::class, ['label' => 'Nro. Documento'])
+            ->add('nameRzs', TextType::class, ['label' => 'Nombre o Razón Social'])
+            ->add('comercialName', TextType::class, ['label' => 'Nombre Comercial'])
             ->add('email', EmailType::class, [
                 'required' => false
             ])
-            ->add('address')
-            ->add('observation');
+            ->add('address', TextType::class, ['label' => 'Dirección'])
+            ->add('observation', TextType::class, ['label' => 'Observaciones']);
     }
     
     /**

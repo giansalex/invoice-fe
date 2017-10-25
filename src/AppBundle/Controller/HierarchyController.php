@@ -92,11 +92,15 @@ class HierarchyController extends Controller
     /**
      * Displays a form to edit an existing hierarchy entity.
      *
-     * @Route("/{id}/edit", name="hierarchy_edit")
+     * @Route("/{id}/edit/{code}", name="hierarchy_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Hierarchy $hierarchy)
+    public function editAction(Request $request, $id, $code)
     {
+        $em = $this->getDbManager();
+        $hierarchy = $em->getRepository('AppBundle:Hierarchy')
+                        ->findOneBy(['id' => $id, 'code' => $code]);
+
         $deleteForm = $this->createDeleteForm($hierarchy);
         $editForm = $this->createForm('AppBundle\Form\HierarchyType', $hierarchy);
         $editForm->handleRequest($request);
@@ -104,7 +108,7 @@ class HierarchyController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDbManager()->flush();
 
-            return $this->redirectToRoute('hierarchy_edit', array('id' => $hierarchy->getId()));
+            return $this->redirectToRoute('hierarchy_show', array('id' => $hierarchy->getId()));
         }
 
         return $this->render('hierarchy/edit.html.twig', array(

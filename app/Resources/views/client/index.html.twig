@@ -1,53 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Clients list</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Typedoc</th>
-                <th>Document</th>
-                <th>Namerzs</th>
-                <th>Comercialname</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Observation</th>
-                <th>Userid</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for client in clients %}
-            <tr>
-                <td><a href="{{ path('client_show', { 'id': client.id }) }}">{{ client.id }}</a></td>
-                <td>{{ client.typeDoc }}</td>
-                <td>{{ client.document }}</td>
-                <td>{{ client.nameRzs }}</td>
-                <td>{{ client.comercialName }}</td>
-                <td>{{ client.email }}</td>
-                <td>{{ client.address }}</td>
-                <td>{{ client.observation }}</td>
-                <td>{{ client.userId }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('client_show', { 'id': client.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('client_edit', { 'id': client.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('client_new') }}">Create a new client</a>
-        </li>
-    </ul>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Lista de Clientes</div>
+            <div class="panel-body">
+                <div class="bottom-space">
+                    <a class="btn btn-success" href="{{ path('client_new') }}"><i class="fa fa-plus"></i> Crear nuevo cliente</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Tipo Doc.</th>
+                            <th>Nro. Doc.</th>
+                            <th>Nombre / Razón Social</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for client in clients %}
+                            <tr>
+                                <td>{{ client.typeDoc }}</td>
+                                <td>{{ client.document }}</td>
+                                <td>{{ client.nameRzs }}</td>
+                                <td>{{ client.email }}</td>
+                                <td>{{ client.address }}</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm"
+                                       href="{{ path('client_edit', { 'id': client.id }) }}"><i class="fa fa-edit"></i> Editar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

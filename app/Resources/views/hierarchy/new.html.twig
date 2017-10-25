@@ -1,16 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Hierarchy creation</h1>
+    <div class="container">
+        <h1><i class="fa fa-plus"></i> Nuevo Hierarchy</h1>
 
-    {{ form_start(form) }}
+        {{ form_start(form) }}
         {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button class="btn btn-primary">Crear</button>
+            </div>
+        </div>
+        {{ form_end(form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('hierarchy_index') }}">Back to the list</a>
-        </li>
-    </ul>
+        <a href="{{ path('hierarchy_index') }}"><i class="fa fa-angle-double-left"></i> Regresar a lista</a>
+    </div>
 {% endblock %}
