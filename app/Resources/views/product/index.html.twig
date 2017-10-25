@@ -1,49 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Products list</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Code</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Unitcode</th>
-                <th>Taxcode</th>
-                <th>Userid</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for product in products %}
-            <tr>
-                <td><a href="{{ path('productos_show', { 'id': product.id }) }}">{{ product.id }}</a></td>
-                <td>{{ product.code }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.unitCode }}</td>
-                <td>{{ product.taxCode }}</td>
-                <td>{{ product.userId }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('productos_show', { 'id': product.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('productos_edit', { 'id': product.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('productos_new') }}">Create a new product</a>
-        </li>
-    </ul>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Lista de Productos</div>
+            <div class="panel-body">
+                <div class="bottom-space">
+                    <a class="btn btn-success" href="{{ path('productos_new') }}"><i class="fa fa-plus"></i> Crear nuevo producto</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Unidad</th>
+                            <th>Tipo IGV</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <td>{{ product.code }}</td>
+                                <td>{{ product.description }}</td>
+                                <td>{{ product.price }}</td>
+                                <td>{{ product.unitCode }}</td>
+                                <td>{{ product.taxCode }}</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm"
+                                       href="{{ path('productos_edit', { 'id': product.id }) }}"><i class="fa fa-edit"></i> Editar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

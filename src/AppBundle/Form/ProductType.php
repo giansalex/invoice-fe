@@ -2,16 +2,12 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Hierarchy;
-use AppBundle\Entity\UserUnit;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -37,15 +33,16 @@ class ProductType extends AbstractType
         $user = $this->tokenStorage->getToken()->getUser();
 
         $builder
-            ->add('code')
-            ->add('description')
-            ->add('price', NumberType::class)
+            ->add('code', TextType::class, ['label' => 'Código'])
+            ->add('description', TextType::class, ['label' => 'Descripción'])
+            ->add('price', NumberType::class, ['label' => 'Precio'])
             ->add('unitCode', ChoiceType::class, [
-                'choices' => $this->getUnitChoices($user)
+                'choices' => $this->getUnitChoices($user),
+                'label' => 'Unidad de Medida',
             ])
             ->add('taxCode', ChoiceType::class, [
                 'choices' => $this->getTaxChoices(),
-
+                'label' => 'Afectación IGV',
             ]);
     }
     
