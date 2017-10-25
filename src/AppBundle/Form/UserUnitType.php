@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,8 +29,11 @@ class UserUnitType extends AbstractType
         $builder
             ->add('code', ChoiceType::class, [
                 'choices' => $this->getChoices(),
+                'label' => 'Código',
             ])
-            ->add('description');
+            ->add('description', TextType::class, [
+                'label' => 'Descripción',
+            ]);
     }
     
     /**

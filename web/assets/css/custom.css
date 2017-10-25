@@ -57,3 +57,15 @@
         background: #1e73b8;
     }
 }
+
+.h-inline {
+    display: inline;
+}
+
+.ct-edit {
+    margin-bottom: 20px;
+}
+
+.bottom-space {
+    margin-bottom: 1rem;
+}
