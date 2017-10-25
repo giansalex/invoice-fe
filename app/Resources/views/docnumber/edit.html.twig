@@ -1,21 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Docnumber edit</h1>
-
+<div class="container">
+    <div class="ct-edit">
+        <h1 class="h-inline">Editar Series</h1>
+        <div class="pull-right">
+            {{ form_start(delete_form) }}
+            <button title="elliminar" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+            {{ form_end(delete_form) }}
+        </div>
+    </div>
     {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+    {{ form_widget(edit_form) }}
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button class="btn btn-primary">Editar</button>
+        </div>
+    </div>
     {{ form_end(edit_form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('series-documento_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    <a href="{{ path('series-documento_index') }}"><i class="fa fa-angle-double-left"></i> Regresar a lista</a>
+</div>
 {% endblock %}

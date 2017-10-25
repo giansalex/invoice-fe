@@ -1,20 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Docnumber creation</h1>
+    <div class="container">
+        <h1><i class="fa fa-plus"></i> Nueva Serie</h1>
 
-    {{ form_start(form) }}
+        {{ form_start(form) }}
         {{ form_widget(form) }}
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button class="btn btn-primary">Crear</button>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button class="btn btn-primary">Crear</button>
+            </div>
         </div>
-    </div>
-    {{ form_end(form) }}
+        {{ form_end(form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('series-documento_index') }}">Back to the list</a>
-        </li>
-    </ul>
+        <a href="{{ path('series-documento_index') }}"><i class="fa fa-angle-double-left"></i> Regresar a lista</a>
+    </div>
 {% endblock %}

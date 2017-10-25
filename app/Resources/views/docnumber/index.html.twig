@@ -1,43 +1,39 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Docnumbers list</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Code</th>
-                <th>Serie</th>
-                <th>Correlativo</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for docNumber in docNumbers %}
-            <tr>
-                <td><a href="{{ path('series-documento_show', { 'id': docNumber.id }) }}">{{ docNumber.id }}</a></td>
-                <td>{{ docNumber.code }}</td>
-                <td>{{ docNumber.serie }}</td>
-                <td>{{ docNumber.correlativo }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('series-documento_show', { 'id': docNumber.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('series-documento_edit', { 'id': docNumber.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('series-documento_new') }}">Create a new docNumber</a>
-        </li>
-    </ul>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Lista de Series y Correlativos</div>
+            <div class="panel-body">
+                <div class="bottom-space">
+                    <a class="btn btn-success" href="{{ path('series-documento_new') }}"><i class="fa fa-plus"></i> Crear nueva serie</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Serie</th>
+                            <th>Correlativo</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for docNumber in docNumbers %}
+                            <tr>
+                                <td>{{ docNumber.code }}</td>
+                                <td>{{ docNumber.serie }}</td>
+                                <td>{{ docNumber.correlativo }}</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm"
+                                       href="{{ path('series-documento_edit', { 'id': docNumber.id }) }}"><i class="fa fa-edit"></i> Editar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
