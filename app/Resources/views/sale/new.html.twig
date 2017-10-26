@@ -103,6 +103,31 @@
                     ng-click="addDetail()">
                     <i class="fa fa-plus"></i> Agregar
                 </button>
+                <br>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td class="text-right col-sm-10">Op. Gravadas</td>
+                        <td ng-bind="doc.gravada|number:2"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">Op. Inafectas</td>
+                        <td ng-bind="doc.inafecta|number:2"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">Op. Exoneradas</td>
+                        <td ng-bind="doc.exonerada|number:2"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">IGV (18%)</td>
+                        <td ng-bind="doc.igv|number:2"></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">Total</td>
+                        <td ng-bind="doc.total|number:2"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -206,13 +231,13 @@
                          <select class="form-control"
                                 ng-change="onSelectTax()"
                                 ng-model="selectTax"
-                                ng-options="item as item.description for item in taxs track by item.code">
+                                ng-options="item.description for item in taxs track by item.code">
                         </select>
                     </div>
                     <div class="col-md-2">
                         <label>Valor Unitario</label>
                         <input
-                        ng-model="$ctrl.product.value"
+                        ng-model="$ctrl.product.price"
                         ng-change="$ctrl.onUpdate()"
                         class="form-control"
                         type="text"
@@ -263,6 +288,8 @@
                 }
 
                 function update(idx) {
+                    calcDetail($scope.details[idx]);
+                    sumTotals();
                     console.log($scope.details[idx]);
                 }
 
@@ -290,6 +317,59 @@
                         value: 0
                     });
                 }
+
+                function calcDetail(prod) {
+                    if (!prod.tax) {
+                        return;
+                    }
+                    prod.price = prod.price || 0;
+                    prod.cantidad = prod.cantidad || 0;
+                    prod.subtotal = prod.price * prod.cantidad;
+                    var total = 0;
+                    var igv = 0;
+                    switch(prod.tax) {
+                        case '10':
+                            total = prod.subtotal * 1.18;
+                            igv = prod.subtotal * 0.18;
+                            break;
+                        case '20':
+                        case '30':
+                            total = prod.subtotal * 1.18;
+                            break;
+                    }
+
+                    prod.igv = igv;
+                    prod.total = total;
+                }
+                
+                function sumTotals() {
+                    var len = $scope.details.length;
+                    var totals = {};
+                    var total = 0;
+                    var igv = 0;
+                    for (var i = 0; i < len; i++) {
+                        var obj = $scope.details[i];
+                        var tax = obj.tax;
+//                        if (!tax) {
+//                            continue;
+//                        }
+                        var t = obj.total || 0;
+                        if (totals.hasOwnProperty(tax)) {
+                            totals[tax] += t
+                        } else {
+                            totals[tax] = t;
+                        }
+                        igv += obj.igv;
+                        total += t;
+                    }
+
+                    console.log(totals);
+                    $scope.doc.gravada = totals['10'] || 0;
+                    $scope.doc.inafecta = totals['20'] || 0;
+                    $scope.doc.exonerada = totals['30'] || 0;
+                    $scope.doc.igv = igv;
+                    $scope.doc.total = total;
+                }
             }]);
 
         detailController.$inject = ['$scope', 'storeService'];
@@ -299,9 +379,7 @@
             $scope.selectTax = null;
             $scope.onSelectTax = onSelectTax;
             activate();
-            var d;
             function activate() {
-                console.log(ctr.product);
                 $scope.$watch('selectProd', afterSelProd);
                 $store.getTaxs(function (data) {
                     $scope.taxs = data;
@@ -313,12 +391,33 @@
                 if (!$scope.selectTax) {
                     return;
                 }
-                ctr.product.taxCode = $scope.selectTax.code;
-                console.log(ctr.product.taxCode);
+                ctr.product.tax = $scope.selectTax.code;
+                console.log(ctr.product.tax);
+                ctr.onUpdate();
             }
             function afterSelProd() {
-                console.log();
+                if (!$scope.selectProd || !$scope.selectProd.originalObject) {
+                    return;
+                }
+                var newProd = $scope.selectProd.originalObject;
+                var prod = ctr.product;
+
+                console.log(newProd);
+                prod.tax = newProd.tax;
+                $scope.selectTax = {code: newProd.tax};
+                prod.price = newProd.price;
+
                 ctr.onUpdate();
+            }
+
+            function getSelect(code) {
+                var len = $scope.taxs.length;
+                for (var i = 0; i < len; i++) {
+                    var obj = $scope.taxs[i];
+                    if (obj.code === code) {
+                        return obj;
+                    }
+                }
             }
         }
     </script>
