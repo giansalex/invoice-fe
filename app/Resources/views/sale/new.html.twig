@@ -1,5 +1,46 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <style>
+        .angucomplete-holder {
+            position: relative;
+        }
+
+        .angucomplete-dropdown {
+            border: #ececec solid 1px;
+            border-radius: 2px;
+            padding: 6px;
+            cursor: pointer;
+            width: 250px;
+            z-index: 9999;
+            position: absolute;
+            margin-top: -6px;
+            background-color: #ffffff;
+        }
+
+        .angucomplete-searching {
+            color: #acacac;
+            font-size: 14px;
+        }
+
+        .angucomplete-description {
+            font-size: 14px;
+            color: whitesmoke;
+        }
+
+        .angucomplete-row {
+            padding: 5px;
+            color: #000000;
+            margin-bottom: 4px;
+            clear: both;
+        }
+
+        .angucomplete-selected-row {
+            background-color: #3c94e6;
+            color: #ffffff;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     <div class="container" ng-app="fe" ng-controller="Main">
         <h1>Nuevo Comprobante</h1>
@@ -52,7 +93,11 @@
         <div class="panel panel-default">
             <div class="panel-heading">Detalles</div>
             <div class="panel-body" style="width: 100%">
-                <app-detail ng-repeat="detail in details" product="detail" on-delete="removeDetail($index)"></app-detail>
+                <app-detail ng-repeat="detail in details"
+                            product="detail"
+                            on-delete="removeDetail($index)"
+                            on-update="updateDetail($index)">
+                </app-detail>
                 <br>
                 <button class="btn btn-success"
                     ng-click="addDetail()">
@@ -142,24 +187,25 @@
                         <angucomplete-alt
                               placeholder="buscar producto"
                               pause="400"
-                              selected-object="$ctrl.product.select"
+                              selected-object="selectProd"
                               remote-url="{{ path('productos_filter') }}?s="
                               title-field="code,name"
                               minlength="2"
                               description-field="price"
-                              input-class="form-control form-control-small"
-                              match-class="highlight"/>
+                              input-class="form-control"/>
                     </div>
                     <div class="col-md-1">
                         <label>Cantidad</label>
                         <input class="form-control"
                         type="text" title="cantidad"
+                        ng-change="$ctrl.onUpdate()"
                         ng-model="$ctrl.product.cantidad">
                     </div>
                     <div class="col-md-2">
                         <label>Tipo IGV</label>
                          <select class="form-control"
-                                ng-model="$ctrl.product.tax"
+                                ng-change="onSelectTax()"
+                                ng-model="selectTax"
                                 ng-options="item as item.description for item in taxs track by item.code">
                         </select>
                     </div>
@@ -167,17 +213,18 @@
                         <label>Valor Unitario</label>
                         <input
                         ng-model="$ctrl.product.value"
+                        ng-change="$ctrl.onUpdate()"
                         class="form-control"
                         type="text"
                         title="valor unitario">
                     </div>
                     <div class="col-md-2">
                         <label>SubTotal</label>
-                        <input class="form-control" type="text" title="subtotal">
+                        <input class="form-control" type="text" title="subtotal" ng-model="$ctrl.product.subtotal">
                     </div>
                     <div class="col-md-2">
                         <label>TOTAL</label>
-                        <input class="form-control" type="text" title="total">
+                        <input class="form-control" type="text" title="total" ng-model="$ctrl.product.total">
                     </div>
                     <div class="col-md-1">
                         <label style="height: 40px;"></label>
@@ -199,6 +246,7 @@
                 $scope.details = [];
                 $scope.onDocChange = onDocChange;
                 $scope.removeDetail = remove;
+                $scope.updateDetail = update;
                 $scope.addDetail = addDetail;
                 activate();
 
@@ -212,6 +260,10 @@
                         .then(function (r) {
                             $scope.monedas = r.data;
                         })
+                }
+
+                function update(idx) {
+                    console.log($scope.details[idx]);
                 }
 
                 function onDocChange() {
@@ -242,12 +294,31 @@
 
         detailController.$inject = ['$scope', 'storeService'];
         function detailController($scope, $store) {
+            var ctr = this;
+            $scope.selectProd = {};
+            $scope.selectTax = null;
+            $scope.onSelectTax = onSelectTax;
             activate();
-
+            var d;
             function activate() {
+                console.log(ctr.product);
+                $scope.$watch('selectProd', afterSelProd);
                 $store.getTaxs(function (data) {
                     $scope.taxs = data;
                 });
+
+            }
+
+            function onSelectTax() {
+                if (!$scope.selectTax) {
+                    return;
+                }
+                ctr.product.taxCode = $scope.selectTax.code;
+                console.log(ctr.product.taxCode);
+            }
+            function afterSelProd() {
+                console.log();
+                ctr.onUpdate();
             }
         }
     </script>
