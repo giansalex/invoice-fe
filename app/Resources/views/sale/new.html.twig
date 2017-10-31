@@ -104,32 +104,42 @@
                     <i class="fa fa-plus"></i> Agregar
                 </button>
                 <br>
-                <table class="table">
-                    <tbody>
-                    <tr>
-                        <td class="text-right col-sm-10">Op. Gravadas</td>
-                        <td ng-bind="doc.gravada|number:2"></td>
-                    </tr>
-                    <tr>
-                        <td class="text-right">Op. Inafectas</td>
-                        <td ng-bind="doc.inafecta|number:2"></td>
-                    </tr>
-                    <tr>
-                        <td class="text-right">Op. Exoneradas</td>
-                        <td ng-bind="doc.exonerada|number:2"></td>
-                    </tr>
-                    <tr>
-                        <td class="text-right">IGV (18%)</td>
-                        <td ng-bind="doc.igv|number:2"></td>
-                    </tr>
-                    <tr>
-                        <td class="text-right">Total</td>
-                        <td ng-bind="doc.total|number:2"></td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="row">
+                    <div class="col-md-offset-8 col-md-4">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td class="text-right">Op. Gravadas</td>
+                                <td ng-bind="doc.gravada|number:2"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">Op. Inafectas</td>
+                                <td ng-bind="doc.inafecta|number:2"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">Op. Exoneradas</td>
+                                <td ng-bind="doc.exonerada|number:2"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">IGV (18%)</td>
+                                <td ng-bind="doc.igv|number:2"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">Total</td>
+                                <td ng-bind="doc.total|number:2"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
+        <br><br>
+        <button class="btn btn-primary"
+                ng-click="create()">
+            <i class="fa fa-save"></i> Crear
+        </button>
+        <br><br>
     </div>
 {% endblock %}
 
@@ -267,12 +277,18 @@
                 controller: detailController
             })
             .controller('Main', ['$scope', 'FeService', function ($scope, $service) {
-                $scope.doc = {};
+                $scope.doc = {
+                    exonerada: 0,
+                    inafecta: 0,
+                    igv: 0,
+                    total: 0
+                };
                 $scope.details = [];
                 $scope.onDocChange = onDocChange;
                 $scope.removeDetail = remove;
                 $scope.updateDetail = update;
                 $scope.addDetail = addDetail;
+                $scope.create = create;
                 activate();
 
                 function activate() {
@@ -285,6 +301,21 @@
                         .then(function (r) {
                             $scope.monedas = r.data;
                         })
+                }
+
+                function create() {
+                    var doc = $scope.doc;
+                    if (doc.moneda) {
+                        doc.moneda = doc.moneda.code;
+                    }
+                    if (doc.tipo) {
+                        doc.tipo = doc.tipo.code;
+                    }
+                    if (doc.client) {
+                        doc.client = doc.client.originalObject.id;
+                    }
+                    doc.details = $scope.details;
+                    console.log($scope.doc);
                 }
 
                 function update(idx) {
@@ -363,10 +394,9 @@
                         total += t;
                     }
 
-                    console.log(totals);
                     $scope.doc.gravada = totals['10'] || 0;
-                    $scope.doc.inafecta = totals['20'] || 0;
-                    $scope.doc.exonerada = totals['30'] || 0;
+                    $scope.doc.exonerada = totals['20'] || 0;
+                    $scope.doc.inafecta = totals['30'] || 0;
                     $scope.doc.igv = igv;
                     $scope.doc.total = total;
                 }
