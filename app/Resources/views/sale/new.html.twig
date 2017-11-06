@@ -49,7 +49,7 @@
                 <label for="tipoDoc">Tipo de Documento</label>
                 <select id="tipoDoc"
                         class="form-control"
-                        ng-model="doc.tipo"
+                        ng-model="selecTipoDoc"
                         ng-options="item as item.description for item in tipoDocs track by item.code"
                         ng-change="onDocChange()">
                 </select>
@@ -71,7 +71,7 @@
                 <angucomplete-alt
                         placeholder="buscar cliente"
                         pause="400"
-                        selected-object="doc.client"
+                        selected-object="selectClient"
                         remote-url="{{ path('client_filter') }}?s="
                         title-field="document,name"
                         minlength="2"
@@ -84,7 +84,7 @@
                 <label form="moneda">Moneda</label>
                 <select id="moneda"
                         class="form-control"
-                        ng-model="doc.moneda"
+                        ng-model="selectMoneda"
                         ng-options="item as item.description for item in monedas track by item.code">
                 </select>
             </div>
@@ -155,7 +155,8 @@
                     getClients: getClients,
                     getProducts: getProducts,
                     getTaxs: getTaxs,
-                    getMonedas: getMonedas
+                    getMonedas: getMonedas,
+                    save: save
                 };
 
                 function getTiposDoc() {
@@ -180,6 +181,10 @@
                 
                 function getMonedas() {
                     return $http.get('{{ path('hierarchy_group', {id: 2}) }}');
+                }
+
+                function save(data) {
+                    return $http.post('{{ path('sale_new_save') }}', data);
                 }
             }])
             .factory('storeService', ['FeService', function ($service) {
@@ -234,7 +239,7 @@
                         <input class="form-control"
                         type="text" title="cantidad"
                         ng-change="$ctrl.onUpdate()"
-                        ng-model="$ctrl.product.cantidad">
+                        ng-model="$ctrl.product.quantity">
                     </div>
                     <div class="col-md-2">
                         <label>Tipo IGV</label>
@@ -278,10 +283,12 @@
             })
             .controller('Main', ['$scope', 'FeService', function ($scope, $service) {
                 $scope.doc = {
+                    gravada: 0,
                     exonerada: 0,
                     inafecta: 0,
                     igv: 0,
-                    total: 0
+                    total: 0,
+                    emision: new Date()
                 };
                 $scope.details = [];
                 $scope.onDocChange = onDocChange;
@@ -305,16 +312,23 @@
 
                 function create() {
                     var doc = $scope.doc;
-                    if (doc.moneda) {
-                        doc.moneda = doc.moneda.code;
+                    if ($scope.selectMoneda) {
+                        doc.moneda = $scope.selectMoneda.code;
                     }
-                    if (doc.tipo) {
-                        doc.tipo = doc.tipo.code;
+                    if ($scope.selecTipoDoc) {
+                        doc.docType = $scope.selecTipoDoc.code;
                     }
-                    if (doc.client) {
-                        doc.client = doc.client.originalObject.id;
+                    if ($scope.selectClient) {
+                        doc.clientId = $scope.selectClient.originalObject.id;
                     }
+                    //doc.operationType = '01';
                     doc.details = $scope.details;
+
+                    $service.save($scope.doc)
+                        .then(function (r) {
+                            console.log(r.data);
+                            alert('save');
+                        });
                     console.log($scope.doc);
                 }
 
@@ -325,7 +339,7 @@
                 }
 
                 function onDocChange() {
-                    var tipo = $scope.doc.tipo;
+                    var tipo = $scope.selecTipoDoc;
                     $service.getSeriesForTipo({doc: tipo.code})
                         .then(function (r) {
                             var obj = r.data;
@@ -343,7 +357,7 @@
 
                 function addDetail() {
                     $scope.details.push({
-                        cantidad: 1,
+                        quantity: 1,
                         tax: '10',
                         value: 0
                     });
@@ -354,8 +368,8 @@
                         return;
                     }
                     prod.price = prod.price || 0;
-                    prod.cantidad = prod.cantidad || 0;
-                    prod.subtotal = prod.price * prod.cantidad;
+                    prod.quantity = prod.quantity || 0;
+                    prod.subtotal = prod.price * prod.quantity;
                     var total = 0;
                     var igv = 0;
                     switch(prod.tax) {
@@ -414,14 +428,13 @@
                 $store.getTaxs(function (data) {
                     $scope.taxs = data;
                 });
-
             }
 
             function onSelectTax() {
                 if (!$scope.selectTax) {
                     return;
                 }
-                ctr.product.tax = $scope.selectTax.code;
+                ctr.product.taxCode = $scope.selectTax.code;
                 console.log(ctr.product.tax);
                 ctr.onUpdate();
             }
@@ -433,7 +446,9 @@
                 var prod = ctr.product;
 
                 console.log(newProd);
-                prod.tax = newProd.tax;
+                prod.productId = newProd.id;
+                prod.unitValue = newProd.unit;
+                prod.taxCode = newProd.tax;
                 $scope.selectTax = {code: newProd.tax};
                 prod.price = newProd.price;
 

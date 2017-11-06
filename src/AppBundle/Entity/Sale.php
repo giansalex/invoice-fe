@@ -608,6 +608,17 @@ class Sale
     }
 
     /**
+     * @param SaleDetail[] $details
+     * @return Sale
+     */
+    public function setDetails($details)
+    {
+        $this->details = $details;
+
+        return $this;
+    }
+
+    /**
      * @return SaleDetail[]
      */
     public function getDetails()

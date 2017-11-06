@@ -21,7 +21,7 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
     public function filterByText(User $user, $text)
     {
         return $this->createQueryBuilder('u')
-            ->select('u.id,u.code,u.description AS name,u.price,u.taxCode AS tax')
+            ->select('u.id,u.code,u.description AS name,u.price,u.unitCode AS unit,u.taxCode AS tax')
             ->where('u.user = ?1 AND u.code LIKE ?2 OR u.description LIKE ?2')
             ->setMaxResults(10)
             ->setParameters([

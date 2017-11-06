@@ -287,6 +287,16 @@ class SaleDetail
     }
 
     /**
+     * @param Sale $sale
+     * @return SaleDetail
+     */
+    public function setSale($sale)
+    {
+        $this->sale = $sale;
+        return $this;
+    }
+
+    /**
      * @return Sale
      */
     public function getSale()

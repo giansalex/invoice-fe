@@ -2,9 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Sale;
+use AppBundle\Entity\SaleDetail;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Sale Controller.
@@ -49,9 +52,30 @@ class SaleController extends Controller
      * @Route("/new", name="sale_new_save")
      * @Method({"POST"})
      */
-    public function newSaveAction()
+    public function newSaveAction(Request $request)
     {
-        return $this->render('sale/new.html.twig');
+        $serializer = $this->get('serializer');
+        /**@var $sale Sale */
+        $sale = $serializer->deserialize($request->getContent(), Sale::class, 'json');
+
+        $em = $this->getDbManager();
+
+        $details = $sale->getDetails();
+        $sale->setEmision(new \DateTime($sale->getEmision()));
+
+        // incrementar correlativo doc.
+
+        foreach ($details as $detail) {
+            $det = $serializer->deserialize(json_encode($detail), SaleDetail::class, 'json');
+            $det->setSale($sale);
+            $em->persist($det);
+        }
+        $sale->setDetails([]);
+        $sale->setUser($this->getUser());
+        $em->persist($sale);
+        $em->flush();
+
+        return $this->json($sale);
     }
 
     /**
