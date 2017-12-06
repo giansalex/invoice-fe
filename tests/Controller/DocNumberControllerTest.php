@@ -6,6 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DocNumberControllerTest extends WebTestCase
 {
+    public function testIndex()
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/series-documento/');
+
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+    }
     /*
     public function testCompleteScenario()
     {
@@ -13,7 +21,7 @@ class DocNumberControllerTest extends WebTestCase
         $client = static::createClient();
 
         // Create a new entry in the database
-        $crawler = $client->request('GET', '/sries-documento/');
+        $crawler = $client->request('GET', '/series-documento/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /sries-documento/");
         $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
 

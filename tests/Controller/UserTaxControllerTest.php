@@ -6,6 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UserTaxControllerTest extends WebTestCase
 {
+    public function testIndex()
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/tipo-tributo/');
+
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+    }
     /*
     public function testCompleteScenario()
     {

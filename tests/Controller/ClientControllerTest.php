@@ -6,6 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ClientControllerTest extends WebTestCase
 {
+    public function testIndex()
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/client/');
+
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+    }
+    
     /*
     public function testCompleteScenario()
     {
