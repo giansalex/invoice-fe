@@ -1,0 +1,16 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+    default_locale: es
+    csrf_protection: ~
+    #http_method_override: true
+
+    # uncomment this entire section to enable sessions
+    session:
+        # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id: session.handler.native_file
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+
+    #esi: ~
+    #fragments: ~
+    php_errors:
+        log: true
