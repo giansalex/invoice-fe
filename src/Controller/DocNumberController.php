@@ -4,11 +4,10 @@ namespace App\Controller;
 
 use App\Entity\DocNumber;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Docnumber controller.
@@ -22,8 +21,7 @@ class DocNumberController extends Controller
     /**
      * Lists all docNumber entities.
      *
-     * @Route("/", name="series-documento_index")
-     * @Method("GET")
+     * @Route("/", name="series-documento_index", methods={"GET"})
      */
     public function indexAction()
     {
@@ -37,8 +35,7 @@ class DocNumberController extends Controller
     }
 
     /**
-     * @Route("/by-doc", name="serie_by_doc")
-     * @Method({"POST"})
+     * @Route("/by-doc", name="serie_by_doc", methods={"POST"})
      */
     public function serieForDocAction(Request $request)
     {
@@ -64,8 +61,7 @@ class DocNumberController extends Controller
     /**
      * Creates a new docNumber entity.
      *
-     * @Route("/new", name="series-documento_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="series-documento_new", methods={"GET", "POST"})
      */
     public function newAction(Request $request)
     {
@@ -91,8 +87,7 @@ class DocNumberController extends Controller
     /**
      * Finds and displays a docNumber entity.
      *
-     * @Route("/{id}", name="series-documento_show")
-     * @Method("GET")
+     * @Route("/{id}", name="series-documento_show", methods={"GET"})
      */
     public function showAction(DocNumber $docNumber)
     {
@@ -107,8 +102,7 @@ class DocNumberController extends Controller
     /**
      * Displays a form to edit an existing docNumber entity.
      *
-     * @Route("/{id}/edit", name="series-documento_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="series-documento_edit", methods={"GET", "POST"})
      */
     public function editAction(Request $request, DocNumber $docNumber)
     {
@@ -132,8 +126,7 @@ class DocNumberController extends Controller
     /**
      * Deletes a docNumber entity.
      *
-     * @Route("/{id}", name="series-documento_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="series-documento_delete", methods={"DELETE"})
      */
     public function deleteAction(Request $request, DocNumber $docNumber)
     {

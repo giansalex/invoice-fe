@@ -3,24 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\UserUnit;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Userunit controller.
  *
  * @Route("unidades")
  */
-class UserUnitController extends Controller
+class UserUnitController extends AbstractController
 {
     use BaseControllerTrait;
 
     /**
      * Lists all userUnit entities.
      *
-     * @Route("/", name="unidades_index")
-     * @Method("GET")
+     * @Route("/", name="unidades_index", methods={"GET"})
      */
     public function indexAction()
     {
@@ -36,8 +35,7 @@ class UserUnitController extends Controller
     /**
      * Creates a new userUnit entity.
      *
-     * @Route("/new", name="unidades_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="unidades_new", methods={"GET", "POST"})
      */
     public function newAction(Request $request)
     {
@@ -64,8 +62,7 @@ class UserUnitController extends Controller
     /**
      * Finds and displays a userUnit entity.
      *
-     * @Route("/{id}", name="unidades_show")
-     * @Method("GET")
+     * @Route("/{id}", name="unidades_show", methods={"GET"})
      */
     public function showAction(UserUnit $userUnit)
     {
@@ -80,8 +77,7 @@ class UserUnitController extends Controller
     /**
      * Displays a form to edit an existing userUnit entity.
      *
-     * @Route("/{id}/edit", name="unidades_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="unidades_edit", methods={"GET", "POST"})
      */
     public function editAction(Request $request, UserUnit $userUnit)
     {
@@ -105,8 +101,7 @@ class UserUnitController extends Controller
     /**
      * Deletes a userUnit entity.
      *
-     * @Route("/{id}", name="unidades_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="unidades_delete", methods={"DELETE"})
      */
     public function deleteAction(Request $request, UserUnit $userUnit)
     {

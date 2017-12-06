@@ -4,11 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Product controller.
@@ -22,8 +21,7 @@ class ProductController extends Controller
     /**
      * Lists all product entities.
      *
-     * @Route("/", name="productos_index")
-     * @Method("GET")
+     * @Route("/", name="productos_index", methods={"GET"})
      */
     public function indexAction()
     {
@@ -37,8 +35,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/filter", name="productos_filter")
-     * @Method({"GET"})
+     * @Route("/filter", name="productos_filter", methods={"GET"})
      */
     public function filterAction(Request $request)
     {
@@ -57,8 +54,7 @@ class ProductController extends Controller
     /**
      * Creates a new product entity.
      *
-     * @Route("/new", name="productos_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="productos_new", methods={"GET", "POST"})
      */
     public function newAction(Request $request)
     {
@@ -90,8 +86,7 @@ class ProductController extends Controller
     /**
      * Finds and displays a product entity.
      *
-     * @Route("/{id}", name="productos_show")
-     * @Method("GET")
+     * @Route("/{id}", name="productos_show", methods={"GET"})
      */
     public function showAction(Product $product)
     {
@@ -106,8 +101,7 @@ class ProductController extends Controller
     /**
      * Displays a form to edit an existing product entity.
      *
-     * @Route("/{id}/edit", name="productos_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="productos_edit", methods={"GET", "POST"})
      */
     public function editAction(Request $request, Product $product)
     {
@@ -137,8 +131,7 @@ class ProductController extends Controller
     /**
      * Deletes a product entity.
      *
-     * @Route("/{id}", name="productos_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="productos_delete", methods={"DELETE"})
      */
     public function deleteAction(Request $request, Product $product)
     {

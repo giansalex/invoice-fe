@@ -159,7 +159,7 @@
                     <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %}
                 <span id="reauth-email" class="reauth-email"></span>
-                <input class="form-control" placeholder="Usuario" name="_username" type="text" value="" autofocus="" required>
+                <input class="form-control" placeholder="Usuario" name="_username" type="text" value="{{ last_username }}" autofocus="" required>
                 <input class="form-control" placeholder="Contraseña" name="_password" type="password" value="" required>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
                 <button type="submit" class="btn btn-lg btn-success btn-block btn-signin" name="login" id="submit">Iniciar Sesión</button>

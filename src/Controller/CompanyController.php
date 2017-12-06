@@ -4,16 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Address;
 use App\Entity\Company;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Company Controller.
  *
  * @Route("empresa")
  */
-class CompanyController extends Controller
+class CompanyController extends AbstractController
 {
     use BaseControllerTrait;
 

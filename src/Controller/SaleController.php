@@ -4,10 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Sale;
 use App\Entity\SaleDetail;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Sale Controller.
@@ -21,8 +20,7 @@ class SaleController extends Controller
     /**
      * List of Sales.
      *
-     * @Route("/", name="sale_index")
-     * @Method({"GET"})
+     * @Route("/", name="sale_index", methods={"GET"})
      */
     public function indexAction()
     {
@@ -38,8 +36,7 @@ class SaleController extends Controller
     /**
      * List of Sales.
      *
-     * @Route("/new", name="sale_new")
-     * @Method({"GET"})
+     * @Route("/new", name="sale_new", methods={"GET"})
      */
     public function newAction()
     {
@@ -49,8 +46,7 @@ class SaleController extends Controller
     /**
      * List of Sales.
      *
-     * @Route("/new", name="sale_new_save")
-     * @Method({"POST"})
+     * @Route("/new", name="sale_new_save", methods={"POST"})
      */
     public function newSaveAction(Request $request)
     {
@@ -81,8 +77,7 @@ class SaleController extends Controller
     /**
      * List of Sales.
      *
-     * @Route("/new", name="sale_edit")
-     * @Method({"GET"})
+     * @Route("/new", name="sale_edit", methods={"GET"})
      */
     public function editAction()
     {

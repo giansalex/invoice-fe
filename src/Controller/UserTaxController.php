@@ -3,22 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\UserTax;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Usertax controller.
  *
  * @Route("tipo-tributo")
  */
-class UserTaxController extends Controller
+class UserTaxController extends AbstractController
 {
     /**
      * Lists all userTax entities.
      *
-     * @Route("/", name="tipo-tributo_index")
-     * @Method("GET")
+     * @Route("/", name="tipo-tributo_index", methods={"GET"})
      */
     public function indexAction()
     {
@@ -34,8 +33,7 @@ class UserTaxController extends Controller
     /**
      * Creates a new userTax entity.
      *
-     * @Route("/new", name="tipo-tributo_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="tipo-tributo_new", methods={"GET", "POST"})
      */
     public function newAction(Request $request)
     {
@@ -60,8 +58,7 @@ class UserTaxController extends Controller
     /**
      * Finds and displays a userTax entity.
      *
-     * @Route("/{id}", name="tipo-tributo_show")
-     * @Method("GET")
+     * @Route("/{id}", name="tipo-tributo_show", methods={"GET"})
      */
     public function showAction(UserTax $userTax)
     {
@@ -76,8 +73,7 @@ class UserTaxController extends Controller
     /**
      * Displays a form to edit an existing userTax entity.
      *
-     * @Route("/{id}/edit", name="tipo-tributo_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="tipo-tributo_edit", methods={"GET", "POST"})
      */
     public function editAction(Request $request, UserTax $userTax)
     {
@@ -101,8 +97,7 @@ class UserTaxController extends Controller
     /**
      * Deletes a userTax entity.
      *
-     * @Route("/{id}", name="tipo-tributo_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="tipo-tributo_delete", methods={"DELETE"})
      */
     public function deleteAction(Request $request, UserTax $userTax)
     {

@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Hierarchy;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Hierarchy controller.
@@ -19,8 +19,7 @@ class HierarchyController extends Controller
     /**
      * Lists all hierarchy entities.
      *
-     * @Route("/", name="hierarchy_index")
-     * @Method("GET")
+     * @Route("/", name="hierarchy_index", methods={"GET"})
      */
     public function indexAction()
     {
@@ -34,8 +33,7 @@ class HierarchyController extends Controller
     }
 
     /**
-     * @Route("/group/{id}", name="hierarchy_group")
-     * @Method({"GET"})
+     * @Route("/group/{id}", name="hierarchy_group", methods={"GET"})
      */
     public function getGroupAction($id)
     {
@@ -48,8 +46,7 @@ class HierarchyController extends Controller
     /**
      * Creates a new hierarchy entity.
      *
-     * @Route("/new", name="hierarchy_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="hierarchy_new", methods={"GET", "POST"})
      */
     public function newAction(Request $request)
     {
@@ -74,8 +71,7 @@ class HierarchyController extends Controller
     /**
      * Finds and displays a hierarchy entity.
      *
-     * @Route("/{id}", name="hierarchy_show")
-     * @Method("GET")
+     * @Route("/{id}", name="hierarchy_show", methods={"GET"})
      */
     public function showAction($id)
     {
@@ -92,8 +88,7 @@ class HierarchyController extends Controller
     /**
      * Displays a form to edit an existing hierarchy entity.
      *
-     * @Route("/{id}/edit/{code}", name="hierarchy_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit/{code}", name="hierarchy_edit", methods={"GET", "POST"})
      */
     public function editAction(Request $request, $id, $code)
     {
@@ -121,8 +116,7 @@ class HierarchyController extends Controller
     /**
      * Deletes a hierarchy entity.
      *
-     * @Route("/{id}", name="hierarchy_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="hierarchy_delete", methods={"DELETE"})
      */
     public function deleteAction(Request $request, Hierarchy $hierarchy)
     {
