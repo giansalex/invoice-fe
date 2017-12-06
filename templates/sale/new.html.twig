@@ -145,7 +145,6 @@
 
 {% block javascripts %}
     <script src="{{ asset('build/js/angular.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angucomplete-alt/3.0.0/angucomplete-alt.min.js"></script>
     <script>
         angular.module('fe', ["angucomplete-alt"])
             .factory('FeService', ['$http', function ($http) {

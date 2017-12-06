@@ -12,12 +12,18 @@ Encore
 
     // uncomment to define the assets of the project
     //.addEntry('js/angular', './assets/js/angular.js')
-    .addStyleEntry('css/custom', './assets/css/custom.css')
+    .addEntry('js/angular', './assets/js/angular.js')
+    .addStyleEntry('css/app', './assets/css/app.scss')
+    .createSharedEntry('vendor', [
+        'jquery',
+        'bootstrap',
+        './assets/js/app.js'
+    ])
     // uncomment if you use Sass/SCSS files
-    // .enableSassLoader()
+    .enableSassLoader()
 
     // uncomment for legacy applications that require $/jQuery as a global variable
-    // .autoProvidejQuery()
+    .autoProvidejQuery()
 ;
 
 module.exports = Encore.getWebpackConfig();
