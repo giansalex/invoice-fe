@@ -12,7 +12,7 @@ Encore
 
     // uncomment to define the assets of the project
     //.addEntry('js/angular', './assets/js/angular.js')
-    .addEntry('js/angular', './assets/js/angular.js')
+    .addEntry('js/sale', './assets/js/sale.js')
     .addStyleEntry('css/app', './assets/css/app.scss')
     .createSharedEntry('vendor', [
         'jquery',
